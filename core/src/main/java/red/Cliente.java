@@ -21,8 +21,8 @@ public class Cliente {
 
     public static void setTurnoActual(int turno) {
         turnoActual = turno;
-        System.out.println("El turno actual cambio aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + turno);
-        System.out.println("El turno del jugador es aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + playerIndex);
+        System.out.println("El turno actual cambio es :" + turno);
+        System.out.println("El turno del jugador es a :" + playerIndex);
     }
 
     public static int getTurnoActual() {

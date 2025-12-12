@@ -122,7 +122,20 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	            listener.onCartaGlobalRecibida(cartaId);
 	    	        }
 	    	    });
+	    	}else if (msg.startsWith("PUNTOS;")) {
+	    	    String[] p = msg.split(";");
+
+	    	    final int indiceJugador = Integer.parseInt(p[1]);
+	    	    final int puntos = Integer.parseInt(p[2]);
+	    	    final boolean esPorcentual = p[3].equals("1");
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onModificacionDePuntos(indiceJugador, puntos, esPorcentual);
+	    	        }
+	    	    });
 	    	}
+
 	    }
 	
 	public void enviarJugarCarta(int indiceCarta) {

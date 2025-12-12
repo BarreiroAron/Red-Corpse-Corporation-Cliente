@@ -14,4 +14,6 @@ public interface ClienteListener {
     void onTurnoActualizado(int turno);
 
 	void onCartaGlobalRecibida(String cartaId);
+
+	void onModificacionDePuntos(int indiceJugador, int puntos, boolean esPorcentual);
 }

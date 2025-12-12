@@ -572,5 +572,18 @@ public class JuegoPantalla implements Screen, ClienteListener {
 		
 	}
 
+	@Override
+	public void onModificacionDePuntos(int indiceJugador, int puntos, boolean esPorcentual) {
+
+	    Entidad objetivo = juego.getJugadores().get(indiceJugador);
+	    if (objetivo == null) return;
+  
+	    objetivo.modificarPuntos(puntos,esPorcentual);
+
+	    System.out.println("[CLIENTE] Modificación de puntos: jugador=" + indiceJugador 
+	        + " puntos=" + puntos + " porcentual=" + esPorcentual);
+	}
+
+
 
 }
