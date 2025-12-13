@@ -40,8 +40,8 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 	private int direccionRonda = 1;
 	private int cantidadCartasMazo;
 	
-	private ArrayList<Carta> mazo;
-	private ArrayList<Carta> mesa = new ArrayList<>();;
+	private ArrayList<Carta> mazo =  new ArrayList<>();
+	private ArrayList<Carta> mesa = new ArrayList<>();
 	private ArrayList<Entidad> jugadores;
 	
 	private int indiceMesa=0;

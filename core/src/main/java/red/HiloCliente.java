@@ -134,7 +134,39 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	            listener.onModificacionDePuntos(indiceJugador, puntos, esPorcentual);
 	    	        }
 	    	    });
+	    	}else if (msg.startsWith("CARTA_JUGADA;")) {
+	    	    String[] p = msg.split(";");
+	    	    final int jugadorIndex = Integer.parseInt(p[1]);
+	    	    final String cartaId = p[2];
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onCartaJugada(jugadorIndex, cartaId);
+	    	        }
+	    	    });
+	    	}else if (msg.startsWith("DRAW_SELF;")) {
+	    	    String[] p = msg.split(";");
+	    	    final String cartaId = p[1];
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) listener.onRoboCartaSelf(cartaId);
+	    	    });
 	    	}
+	    	else if (msg.startsWith("DRAW_RIVAL;")) {
+	    	    String[] p = msg.split(";");
+	    	    final int jugadorIndex = Integer.parseInt(p[1]);
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) listener.onRoboCartaRival(jugadorIndex);
+	    	    });
+	    	}
+	    	else if (msg.startsWith("DRAW_DENY;")) {
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) listener.onRoboDenegado(msg);
+	    	    });
+	    	}
+
+
 
 	    }
 	
@@ -169,5 +201,10 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	public void setListener(ClienteListener listener) {
         this.listener = listener;
     }
+
+	@Override
+	public void solicitarRoboCarta() {
+	    enviarMensaje("DRAW"); // o "DRAW;" si preferís siempre con ;
+	}
 }
 

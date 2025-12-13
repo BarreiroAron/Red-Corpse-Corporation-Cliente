@@ -7,5 +7,7 @@ public interface ClienteAPI {
 	 void enviarJugarCarta(int indiceCarta);
 	 void solicitarCartaMazo();
 	 void setListener(ClienteListener listener);
+	 void solicitarRoboCarta();
+
 }
 

@@ -52,6 +52,7 @@ public class JuegoPantalla implements Screen, ClienteListener {
 
     private long cooldownMs = 500;
     private long ultimoClickTime = 0;
+    private boolean esperandoRobo = false;
 
     private final Game game;   // para cambiar pantalla
     private final Juego juego; // tu lógica
@@ -306,6 +307,8 @@ public class JuegoPantalla implements Screen, ClienteListener {
         float anchoCarta = 150f;
         float alturaCarta = 250f;
 
+        boolean esMiTurno = Cliente.getTurnoActual() == Cliente.getPlayerIndex() ;
+        
         boolean hovered = Animaciones.animarHover(
                 batch,
                 this.cartaEspalda,
@@ -315,12 +318,12 @@ public class JuegoPantalla implements Screen, ClienteListener {
                 1.2f,
                 8f,
                 delta);
-
-        if (hovered && Gdx.input.isTouched()) {
+        
+        if (hovered && Gdx.input.isTouched() && !esperandoRobo && esMiTurno) {
             long tiempoActual = TimeUtils.millis();
             if (tiempoActual - ultimoClickTime >= cooldownMs) {
-                juego.robarCartaMazo(jugador);
-                juego.sumarRonda();
+                esperandoRobo = true;
+                clienteAPI.solicitarRoboCarta();
                 ultimoClickTime = tiempoActual;
             }
         }
@@ -373,6 +376,8 @@ public class JuegoPantalla implements Screen, ClienteListener {
         boolean clicProcesado = false;
 
         int indice = 0;
+        
+        //CLICK DE SONAANBULO
         if (juego.isHabilidadActivaEnJugador(juegos.HabilidadActiva.Tipo.SONAMBULO, jugador)
         		&& TimeUtils.timeSinceMillis(ultimoClickTime) >= cooldownMs
         		&& !clicProcesado
@@ -404,8 +409,7 @@ public class JuegoPantalla implements Screen, ClienteListener {
                          	    jugador.removerCarta(carta); // si en ese bloque ya removías, mantenelo
                          	} else {
                          	    // el resto de las cartas usan delay
-                         	    juego.jugarCartaConDelay(carta, jugador, hiloCliente);
-                         	    juego.agregarCartaMesa(carta);
+                         		clienteAPI.enviarJugarCarta(mano.indexOf(carta));
                          	    juego.sumarRonda();
                          	   jugador.removerCarta(carta);
                          	    // (mantener tu removerCarta si lo hacías acá)
@@ -419,6 +423,7 @@ public class JuegoPantalla implements Screen, ClienteListener {
         }
         else 
         {
+        	//CLICK DE CARTA NORMAL
         	 for (Carta carta : mano) {
 
                  float x = inicioX + indice * (anchoCarta + esp);
@@ -466,8 +471,6 @@ public class JuegoPantalla implements Screen, ClienteListener {
                                     	} else {
                                     	    // el resto de las cartas usan delay
                                     		clienteAPI.enviarJugarCarta(mano.indexOf(carta));
-                                    	    juego.jugarCartaConDelay(carta, jugador, hiloCliente);
-                                    	    juego.agregarCartaMesa(carta);
                                     	    juego.sumarRonda();
                                     	    // (mantener tu removerCarta si lo hacías acá)
                                     	}
@@ -583,6 +586,65 @@ public class JuegoPantalla implements Screen, ClienteListener {
 	    System.out.println("[CLIENTE] Modificación de puntos: jugador=" + indiceJugador 
 	        + " puntos=" + puntos + " porcentual=" + esPorcentual);
 	}
+
+	@Override
+	public void onCartaJugada(int jugadorIndex, String cartaId) {
+
+	    Carta carta = Util.crearCartaDesdeId(cartaId);
+	    if (carta == null) return;
+
+	    Entidad jugador = juego.getJugadores().get(jugadorIndex);
+
+	    // Si el cliente tiene la misma mano, podés intentar buscarla por ID
+	    Carta cartaReal = null;
+	    for (Carta c : jugador.getMano()) {
+	        if (c.getId().equals(cartaId)) {
+	            cartaReal = c;
+	            break;
+	        }
+	    }
+
+	    // Si no está en mano, usamos la nueva (por si el cliente no guarda mano del rival)
+	    if (cartaReal == null) cartaReal = carta;
+
+	    // Ejecutar “igual que server”
+	    juego.jugarCarta(cartaReal, jugador);
+
+	    jugador.getMano().remove(cartaReal);
+	    
+	    System.out.println("[CLIENTE] Ejecuté carta desde server: " + cartaId + " jugador=" + jugadorIndex);
+	}
+
+	@Override
+	public void onRoboCartaSelf(String cartaId) {
+	    // crear la carta por ID (cliente visual)
+	    Carta carta = Util.crearCartaDesdeId(cartaId);
+	    if (carta == null) return;
+
+	    int miIndex = Cliente.getPlayerIndex(); // o donde guardes tu playerIndex del INIT
+	    Entidad yo = juego.getJugadores().get(miIndex);
+
+	    yo.getMano().add(carta);
+
+	    esperandoRobo = false;  // ya puede volver a robar si el server lo permite
+	}
+
+
+	@Override
+	public void onRoboCartaRival(int jugadorIndex) {
+	    // NO sabemos cuál carta es (bien)
+	    // podés aumentar contador visual del rival o disparar animación
+	    System.out.println("[CLIENTE] Rival " + jugadorIndex + " robó una carta.");
+	}
+
+	@Override
+	public void onRoboDenegado(String razon) {
+	    System.out.println("[CLIENTE] Robo denegado: " + razon);
+	    esperandoRobo = false;
+	}
+
+
+
 
 
 

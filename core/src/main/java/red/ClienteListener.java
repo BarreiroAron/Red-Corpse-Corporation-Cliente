@@ -16,4 +16,11 @@ public interface ClienteListener {
 	void onCartaGlobalRecibida(String cartaId);
 
 	void onModificacionDePuntos(int indiceJugador, int puntos, boolean esPorcentual);
+
+	void onCartaJugada(int jugadorIndex, String cartaId);
+	
+	void onRoboCartaSelf(String cartaId);
+	void onRoboCartaRival(int jugadorIndex);
+	void onRoboDenegado(String razon);
+
 }
