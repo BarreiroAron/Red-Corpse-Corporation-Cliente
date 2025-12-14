@@ -164,7 +164,19 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	    Gdx.app.postRunnable(() -> {
 	    	        if (listener != null) listener.onRoboDenegado(msg);
 	    	    });
+	    	}else if (msg.startsWith("REMOVE_CARD;")) {
+	    	    String[] p = msg.split(";");
+
+	    	    final int jugadorIndex = Integer.parseInt(p[1]);
+	    	    final int indiceCarta = Integer.parseInt(p[2]);
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onEliminarCartaJugador(jugadorIndex, indiceCarta);
+	    	        }
+	    	    });
 	    	}
+
 
 
 

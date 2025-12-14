@@ -23,4 +23,6 @@ public interface ClienteListener {
 	void onRoboCartaRival(int jugadorIndex);
 	void onRoboDenegado(String razon);
 
+	void onEliminarCartaJugador(int jugadorIndex, int indiceCarta);
+
 }

@@ -643,6 +643,23 @@ public class JuegoPantalla implements Screen, ClienteListener {
 	    esperandoRobo = false;
 	}
 
+	@Override
+	public void onEliminarCartaJugador(int jugadorIndex, int indiceCarta) {
+
+	    Entidad jugador = juego.getJugadores().get(jugadorIndex);
+	    if (jugador == null) return;
+
+	    if (indiceCarta < 0 || indiceCarta >= jugador.getMano().size()) return;
+
+	    jugador.getMano().remove(indiceCarta);
+
+	    System.out.println(
+	        "[CLIENTE] Carta eliminada -> jugador=" + jugadorIndex +
+	        " indice=" + indiceCarta
+	    );
+	}
+
+
 
 
 
