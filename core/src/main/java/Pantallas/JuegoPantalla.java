@@ -659,6 +659,11 @@ public class JuegoPantalla implements Screen, ClienteListener {
 	    );
 	}
 
+	@Override
+	public void onActualizaTiempo(float tiempoJuego) {
+		juego.setTimepoJuegoServer(tiempoJuego);
+	}
+
 
 
 

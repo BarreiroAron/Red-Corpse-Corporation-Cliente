@@ -25,4 +25,7 @@ public interface ClienteListener {
 
 	void onEliminarCartaJugador(int jugadorIndex, int indiceCarta);
 
+	void onActualizaTiempo(float tiempoJuego);
+
+
 }

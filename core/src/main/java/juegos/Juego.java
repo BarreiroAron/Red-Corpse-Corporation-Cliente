@@ -80,6 +80,8 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 	
     private Sound CartaTirada;
     
+    float timepoJuegoServer;
+    
 	private HiloCliente hiloCliente;
 	
     public Juego(ArrayList<Entidad> jugadores, boolean esServidor, HiloCliente hiloCliente) {
@@ -141,7 +143,8 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 	
 	public void actualizar(){
 		actualizarReiniciarPartida();
-		actualizarJugadorPerdedor();
+		//esto se encarga el server
+		//actualizarJugadorPerdedor();
 		comprobarPartidaTerminada();
 		actualizarCartasDisponiblesMazo();
 		comprobarCondicionParaInanicion();
@@ -719,8 +722,7 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 	}
 	
 	public float getProgresoTiempo() {
-	    if (hiloDeTiempo == null) return 0f;
-	    return hiloDeTiempo.getProgreso(); // ← accede al hilo real
+		return timepoJuegoServer; // ← accede al hilo real
 	}
 	
 	@Override
@@ -872,6 +874,12 @@ public void robarCartasMalas(Entidad jugador) {
 
 	public Entidad getJugadorCliente() {
 		return this.jugadores.get(Cliente.getPlayerIndex());
+	}
+
+
+
+	public void setTimepoJuegoServer(float tiempoJuego) {
+		this.timepoJuegoServer= tiempoJuego;
 	}	
 	
 

@@ -175,11 +175,17 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	            listener.onEliminarCartaJugador(jugadorIndex, indiceCarta);
 	    	        }
 	    	    });
+	    	}else if (msg.startsWith("TIEMPO_DE_PPROGRESO;")) {
+	    	    String[] p = msg.split(";");
+
+	    	    final float tiempoJuego = Float.parseFloat(p[1]);
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onActualizaTiempo(tiempoJuego);
+	    	        }
+	    	    });
 	    	}
-
-
-
-
 	    }
 	
 	public void enviarJugarCarta(int indiceCarta) {
