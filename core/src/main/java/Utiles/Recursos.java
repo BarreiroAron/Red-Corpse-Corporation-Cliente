@@ -1,8 +1,11 @@
 package Utiles;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 
 public class Recursos {
+	public final static ArrayList<String> CARTAS = new ArrayList<>();
 	
 	public  final static String FONDO= "FondoCarga.jpg";
 	public final static  String MESA_PRINCIPAL= "MesaPrincipal.png" ;  
@@ -55,4 +58,23 @@ public class Recursos {
 	
 	public static final String TEXTURA_BARRA = "barra.png";
 	
+	static {
+	    CARTAS.add(CAMBIO_DE_RONDA);
+	    CARTAS.add(CHESTER);
+	    CARTAS.add(COLERA);
+	    CARTAS.add(COMPANY);
+	    CARTAS.add(ESTRENIMIENTO);
+	    CARTAS.add(HAMBRE_CONTENIDA);
+	    CARTAS.add(KING_DICE_CARTA);
+	    CARTAS.add(MIMICO);
+	    CARTAS.add(NOT_TODAY);
+	    CARTAS.add(OJO_QUE_TODO_LO_VE);
+	    CARTAS.add(REDENTO);
+	    CARTAS.add(SALTAMONTES);
+	    CARTAS.add(SNAKE);
+	    CARTAS.add(THX_FOR_PLAYING_CARTA);
+	    CARTAS.add(INANICION_CARTA);
+	    CARTAS.add(IM_SCARED);
+	    CARTAS.add(PECADO_CODICIA);
+	}
 }
