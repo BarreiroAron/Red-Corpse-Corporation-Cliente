@@ -29,4 +29,6 @@ public interface ClienteListener {
 
 	void onEliminarJugador(int idxJugador);
 
+	void onjugadorGanador();
+
 }

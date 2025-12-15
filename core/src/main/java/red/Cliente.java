@@ -57,5 +57,27 @@ public class Cliente {
 		Cliente.idPersonajesJugadores.add(idPersonajesJugadores);
 	}
 	
+	public static void ajustarPlayerIndex(int indexEliminado) {
+
+	    // Si yo estaba después del eliminado, corro uno a la izquierda
+	    if (playerIndex > indexEliminado) {
+	        playerIndex--;
+	    }
+
+	    // Si yo soy el eliminado
+	    if (playerIndex == indexEliminado) {
+	        System.out.println("[CLIENTE] Fui eliminado");
+	        // opcional: marcar estado, bloquear input, etc.
+	    }
+
+	    // Clamp de seguridad (por si quedó fuera de rango)
+	    if (playerIndex < 0) {
+	        playerIndex = 0;
+	    }
+
+	    System.out.println("[CLIENTE] PlayerIndex ajustado a: " + playerIndex);
+	}
+
+	
 }
 

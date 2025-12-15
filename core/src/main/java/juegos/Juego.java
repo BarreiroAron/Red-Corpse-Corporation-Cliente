@@ -57,6 +57,8 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 	
 	private boolean partidaFinalizada= false;
 	
+	private boolean ganador=false;
+	
 	private boolean cartasDisponiblesMazo= true;
 
 	//dislay para ejecucion de cartas
@@ -873,7 +875,9 @@ public void robarCartasMalas(Entidad jugador) {
 	}
 
 	public Entidad getJugadorCliente() {
-		return this.jugadores.get(Cliente.getPlayerIndex());
+	    int idx = Cliente.getPlayerIndex();
+	    if (idx < 0 || idx >= jugadores.size()) return null;
+	    return jugadores.get(idx);
 	}
 
 
@@ -890,6 +894,12 @@ public void robarCartasMalas(Entidad jugador) {
 	    }
 
 	    return jugadores.get(indice);
+	}
+
+
+
+	public void setGanadorTrue() {
+		this.ganador=true;
 	}
 
 

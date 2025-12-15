@@ -246,10 +246,10 @@ public class JuegoPantalla implements Screen, ClienteListener {
 	            menuPausaActivo = true;
 	        }
 	    }
-        if (juego.isPartidaFinalizada()) {
+       /* if (juego.isPartidaFinalizada()) {
             game.setScreen(new MenuFinPartida(game,hiloCliente));
             return;
-        }
+        }*/
     }
 
     private void actualizarMouse() {
@@ -679,10 +679,22 @@ public class JuegoPantalla implements Screen, ClienteListener {
 	@Override
 	public void onEliminarJugador(int idxJugador) {
 		if(idxJugador== Cliente.getPlayerIndex()) {
-			game.setScreen(new MenuFinPartida(game, hiloCliente));
+			game.setScreen(new MenuFinPartida(game, hiloCliente,false));
+			 System.out.println(
+				        "[CLIENTE] Fuiste eliminado -> jugador=" + idxJugador 
+				    );
 		}else{
 			juego.eliminarYReacomodarJugador(juego.getJugadorPorIndice(idxJugador));
+			 System.out.println(
+				        "[CLIENTE] Jugador eliminado -> jugador=" + idxJugador 
+				    );
 		}
+	}
+
+	@Override
+	public void onjugadorGanador() {
+		juego.setGanadorTrue();
+		game.setScreen(new MenuFinPartida(game, hiloCliente,true));
 	}
 
 

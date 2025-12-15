@@ -195,7 +195,22 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	            listener.onEliminarJugador(idxJugador);
 	    	        }
 	    	    });
+	    	}else if (msg.startsWith("JUGADOR_GANADOR;")) {
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onjugadorGanador();
+	    	        }
+	    	    });
+	    	}else if (msg.startsWith("AJUSTAR_INDEX;")) {
+	    	    String[] p = msg.split(";");
+	    	    int indexEliminado = Integer.parseInt(p[1]);
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        Cliente.ajustarPlayerIndex(indexEliminado);
+	    	    });
 	    	}
+
 	    }
 	
 	public void enviarJugarCarta(int indiceCarta) {
