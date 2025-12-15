@@ -325,7 +325,7 @@ public class Juego implements ControladorDeJuego, TiempoListener {
 		    }
 	}
 	
-	private void eliminarYReacomodarJugador(Entidad jugadorAEliminar) {
+	public void eliminarYReacomodarJugador(Entidad jugadorAEliminar) {
 	    if (jugadores.isEmpty()) return;
 	    int indexEliminado = jugadores.indexOf(jugadorAEliminar);
 	    if (indexEliminado == -1) return;
@@ -881,6 +881,16 @@ public void robarCartasMalas(Entidad jugador) {
 	public void setTimepoJuegoServer(float tiempoJuego) {
 		this.timepoJuegoServer= tiempoJuego;
 	}	
-	
+
+	public Entidad getJugadorPorIndice(int indice) {
+	    if (jugadores == null) return null;
+
+	    if (indice < 0 || indice >= jugadores.size()) {
+	        return null;
+	    }
+
+	    return jugadores.get(indice);
+	}
+
 
 }

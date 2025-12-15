@@ -50,8 +50,8 @@ public class HiloCliente extends Thread implements ClienteAPI{
 
 	@Override 
 	public void run(){
+		System.out.println("Esperando respuesta");
 		do {
-			System.out.println("Esperando respuesta");
 			byte [] data = new byte[1024];
 			DatagramPacket dp = new DatagramPacket(data,data.length);
 			try {
@@ -183,6 +183,16 @@ public class HiloCliente extends Thread implements ClienteAPI{
 	    	    Gdx.app.postRunnable(() -> {
 	    	        if (listener != null) {
 	    	            listener.onActualizaTiempo(tiempoJuego);
+	    	        }
+	    	    });
+	    	}else if (msg.startsWith("JUGADOR_ELIMINADO;")) {
+	    	    String[] p = msg.split(";");
+
+	    	    final int idxJugador = Integer.parseInt(p[1]);
+
+	    	    Gdx.app.postRunnable(() -> {
+	    	        if (listener != null) {
+	    	            listener.onEliminarJugador(idxJugador);
 	    	        }
 	    	    });
 	    	}

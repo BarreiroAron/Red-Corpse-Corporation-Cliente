@@ -676,6 +676,15 @@ public class JuegoPantalla implements Screen, ClienteListener {
 		juego.setTimepoJuegoServer(tiempoJuego);
 	}
 
+	@Override
+	public void onEliminarJugador(int idxJugador) {
+		if(idxJugador== Cliente.getPlayerIndex()) {
+			game.setScreen(new MenuFinPartida(game, hiloCliente));
+		}else{
+			juego.eliminarYReacomodarJugador(juego.getJugadorPorIndice(idxJugador));
+		}
+	}
+
 
 
 

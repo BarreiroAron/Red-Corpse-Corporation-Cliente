@@ -27,5 +27,6 @@ public interface ClienteListener {
 
 	void onActualizaTiempo(float tiempoJuego);
 
+	void onEliminarJugador(int idxJugador);
 
 }
