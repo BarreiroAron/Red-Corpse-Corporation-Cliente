@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import Utiles.Recursos;
@@ -32,10 +31,12 @@ public class MenuOpciones implements Screen {
 
     private Stage  stage;
     private Slider ambientSlider, sfxSlider;
-    private ImageButton btnVolver;
+    private ImageButton btnVolver; // Se usa para VOLVER AL MENÚ
+    private ImageButton btnCartas; // Nuevo botón para ir a MenuCartas
 
     private Texture texBar, texKnob;
     private Texture texBackUp, texBackDn;
+    private Texture texFondo;
     
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -50,7 +51,7 @@ public class MenuOpciones implements Screen {
 
     @Override
     public void show() {
-
+    	texFondo = new Texture(Gdx.files.internal("fondoOpciones.png"));
     	texBar     = new Texture(Gdx.files.internal("BarraReguladora.png"));
         texKnob    = new Texture(Gdx.files.internal("BotonRegulador.png"));
         texBackUp  = new Texture(Gdx.files.internal(Recursos.BOTON_VOLVER_MENU));
@@ -91,23 +92,41 @@ public class MenuOpciones implements Screen {
             }
         });
 
-       
+        // --- Lógica del botón "MenuCartas" (basado en el código funcional) ---
+        Texture texCartasUp = new Texture(Gdx.files.internal("opcionesBoton.png"));
+        Texture texCartasDn = new Texture(Gdx.files.internal("opcionesBoton.png"));
+        ImageButtonStyle cartasStyle = new ImageButtonStyle();
+        cartasStyle.up = new TextureRegionDrawable(texCartasUp);
+        cartasStyle.down = new TextureRegionDrawable(texCartasDn);
+        
+        btnCartas = new ImageButton(cartasStyle);
+        btnCartas.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new MenuCartas(game, MenuOpciones.this));
+                dispose(); // Limpia recursos al cambiar de pantalla
+            }
+        });
+        
+        // --- Lógica del botón "Volver al Menu" (limpiado) ---
+        // Utilizamos backStyle, que ya tenías definido
         btnVolver = new ImageButton(backStyle);
         btnVolver.addListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
+                // Volver a la pantalla anterior
                 game.setScreen(pantallaAnterior); 
                 dispose();                       
             }
         });
-
     
-        Table root = new Table();               // sin skin, usamos imagenes
+        Table root = new Table();               
         root.setFillParent(true);
         root.defaults().pad(15);
 
         root.add(ambientSlider).width(450).row();
         root.add(sfxSlider).width(450).row();
-        root.add(btnVolver).padTop(40).size(220, 80);
+        root.add(btnCartas).padTop(20).size(220, 80).row(); // El botón de Cartas
+        root.add(btnVolver).padTop(40).size(220, 80);        // El botón de Volver
 
         stage.addActor(root);
     }
@@ -115,6 +134,14 @@ public class MenuOpciones implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+        
+        camera.update();
+        Render.batch.setProjectionMatrix(camera.combined);
+        
+        Render.batch.begin();
+        Render.batch.draw(texFondo, 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        Render.batch.end();
+        
         stage.act(delta);
         stage.draw();
     }

@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import com.badlogic.gdx.graphics.Color;
+import Utiles.PersonalizarTexto;
+
 import Entidades.Entidad;
 import cartas.Carta;
 import Utiles.Animaciones;
@@ -351,7 +354,9 @@ public class JuegoPantalla implements Screen, ClienteListener {
 
     private void dibujarPuntos(Entidad jugador) {
         if (jugador == null) return;
-        float posX = camera.viewportWidth - 260f;
+        Color colorCorporation = new Color(0.36f, 0.09f, 0.09f, 1f);
+        PersonalizarTexto.configurarFuente(bitmapFont, 2.0f, colorCorporation, Color.BLACK);
+        float posX = camera.viewportWidth - 300f;
         float posY = camera.viewportHeight - 250f;
         bitmapFont.draw(Render.batch, jugador.getNombre() + ": " + jugador.getPuntos(), posX, posY);
     }
@@ -439,6 +444,13 @@ public class JuegoPantalla implements Screen, ClienteListener {
                          delta);
 
                  if (hovered) {
+                     bitmapFont.draw(batch, carta.getDescripcion(), 20f, camera.viewportHeight - 20f);
+                 }
+                 
+                 if (hovered) {
+                     Color colorCorporation = new Color(0.36f, 0.09f, 0.09f, 1f);
+                     PersonalizarTexto.configurarFuente(bitmapFont, 2.0f, colorCorporation, Color.BLACK);
+                     
                      bitmapFont.draw(batch, carta.getDescripcion(), 20f, camera.viewportHeight - 20f);
                  }
                  
